@@ -1,0 +1,21 @@
+- name: Collecting com file domains
+  shell: cat "{{ item }}" >> /opt/ansi_sigtel/playbook05/roles/list_all/files/lower_com.txt
+  loop: "{{ raw_files }}"
+
+- name: Collect LIST07 domains
+  shell: cat "{{ item }}" >> /opt/ansi_sigtel/playbook05/roles/list_all/files/lower_7.txt
+  loop: "{{ seven_file }}"
+
+- name: Formatting according to F5 format
+  shell: cat /opt/ansi_sigtel/playbook05/roles/list_all/files/lower_com.txt | sed 's/ //g' | awk -F " " '{print $1}' | sed 's/^/"./g' | sed 's/\r\?$/" := "rpz_mda",/g' >> /tmp/accumulated_file.txt
+
+- name: Formatting according to F5 format
+  shell: cat /opt/ansi_sigtel/playbook05/roles/list_all/files/lower_7.txt | sed 's/ //g' | awk -F " " '{print $1}' | sed 's/^/"./g' | sed 's/\r\?$/" := "rpz_pofma",/g' >> /tmp/accumulated_file.txt
+
+- name: Remove files
+  file:
+    path: "{{ item  }}"
+    state: absent
+  loop:
+    - /opt/ansi_sigtel/playbook05/roles/list_all/files/lower_com.txt
+    - /opt/ansi_sigtel/playbook05/roles/list_all/files/lower_7.txt

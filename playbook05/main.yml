@@ -1,0 +1,47 @@
+---
+- name: DNS block
+  hosts:  local
+  tasks:
+    
+    - name: download email attachment
+      shell:  /usr/bin/python /opt/ansi_sigtel/playbook05/download.py
+      args:
+        chdir:  /opt/ansi_sigtel/playbook05/
+    
+#    - name: Install unzip
+#      package:
+#        name: unzip
+#        state:  present
+
+    - name: Unarchive Files
+      unarchive:
+        src:  YYMMDD04.zip
+        dest: /opt/ansi_sigtel/playbook05/NXDOMAIN/
+        extra_opts:
+          -  "-P"
+          -  "Gebris@10192029"
+
+    - name: Including roles
+      include_role:
+        name: roles/list3
+
+    - name: Including roles
+      include_role:
+        name: roles/list_all
+  
+    - name: Read final file
+      shell: cat /tmp/accumulated_file.txt
+      register: final
+
+    - name: create template
+      template:
+        src: final.j2  
+        dest: /tmp/final_accum_file.txt
+
+    - name: Remove files
+      file:
+        path: "{{ item  }}"
+        state:  absent
+      loop: 
+        - /tmp/accumulated_file.txt
+        - /opt/ansi_sigtel/playbook05/YYMMDD04.zip

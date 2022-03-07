@@ -1,0 +1,12 @@
+raw_path: /opt/ansi_sigtel/playbook05/NXDOMAIN/
+
+raw_files:
+  - /opt/ansi_sigtel/playbook05/NXDOMAIN/YYMMDD01-LIST01-G1-MT1-FULL.txt
+  - /opt/ansi_sigtel/playbook05/NXDOMAIN/YYMMDD01-LIST02-G2-MT1-FULL.txt
+  - /opt/ansi_sigtel/playbook05/NXDOMAIN/YYMMDD01-LIST04-G1-MT1-FULL.txt
+  - /opt/ansi_sigtel/playbook05/NXDOMAIN/YYMMDD01-LIST05-G1-MT1-FULL.txt
+  - /opt/ansi_sigtel/playbook05/NXDOMAIN/YYMMDD01-LIST06-G1-MT1-FULL.txt
+
+seven_file:
+  - /opt/ansi_sigtel/playbook05/NXDOMAIN/YYMMDD01-LIST07-G2-MT3-FULL.txt
+

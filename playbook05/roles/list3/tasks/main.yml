@@ -1,0 +1,11 @@
+- name: Collecting all domains
+  shell: cat /opt/ansi_sigtel/playbook05/NXDOMAIN/YYMMDD01-LIST03-G1-MT2-FULL.txt
+  register: lst_3
+
+- name: Create lowercase template
+  template:
+      src: accu.j2
+      dest: /opt/ansi_sigtel/playbook05/roles/list3/files/lower.txt
+
+- name: Formatting according to F5 format
+  shell: cat /opt/ansi_sigtel/playbook05/roles/list3/files/lower.txt | sed 's/ //g' | awk -F " " '{print $1}' | sed 's/^/"./g' | sed 's/\r\?$/" := "rpz_fraud"/g' >> /tmp/accumulated_file.txt

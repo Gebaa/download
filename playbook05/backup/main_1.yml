@@ -1,0 +1,43 @@
+---
+- name: DNS block
+  hosts:  local
+  tasks:
+    
+    - name: download email attachment
+      shell:  /usr/bin/python /opt/ansi_sigtel/playbook05/download.py
+      args:
+        chdir:  /opt/ansi_sigtel/playbook05/
+    
+    - name: Install unzip
+      package:
+        name: unzip
+        state:  present
+
+   # - name: Unarchive Files
+   #   unarchive:
+   #     src:  YYMMDD04.zip
+   #     dest: /opt/ansi_sigtel/playbook05/NXDOMAIN/
+   #     extra_opts:
+   #       -  "-P"
+   #       -  "Gebris@10192029"
+
+    - name: Remove downloaded file
+      file:
+        path: /opt/ansi_sigtel/playbook05/YYMMDD04.zip
+        state:  absent
+
+    - name: Collecting all domains
+      shell: cat /opt/ansi_sigtel/playbook05/NXDOMAIN/* 
+      register: acc_file
+
+    - name: Create lowercase template
+      template:
+        src: accu.j2
+        dest: /tmp/lower.txt
+
+    - name: Formatting according to F5 format
+      shell: cat /tmp/lower.txt | sed 's/"//g' | sed 's/ //g' | awk -F " " '{print $1}' | sed 's/^/"./g' | sed 's/\r\?$/" := "rpz_cpr"/g' > /tmp/accumulated_file.txt
+
+#    - name: Debug lines
+#      debug:
+#        msg: "{{ acc_file.stdout_lines | lower}}"
